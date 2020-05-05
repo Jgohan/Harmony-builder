@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Лады</title>
+		<link rel="stylesheet" href="style.css" type="text/css"/>
+		<script type="text/javascript" src="script.js" defer></script>
+	</head>
+	<body>
+		<div>
+			<div class="button-menu">
+				<button class="major 0" id="0" onclick="chooseHarmony()">Ионийский</button>
+				<button class="minor 1" id="1" onclick="chooseHarmony()">Дорийский</button>
+				<button class="minor 2" id="2" onclick="chooseHarmony()">Фригийский</button>
+				<button class="major 3" id="3" onclick="chooseHarmony()">Лидийский</button>
+				<button class="major 4" id="4" onclick="chooseHarmony()">Миксолидийский</button>
+				<button class="minor 5" id="5" onclick="chooseHarmony()">Эолийский</button>
+				<button class="semi 6" id="6" onclick="chooseHarmony()">Локрийский</button>
+				<input type="hidden" id="harmonyInput" value="-1">
+			</div>
+			<div class="note-menu">
+				<button class="note" onclick="chooseTonic()">C</button>
+				<button class="note" onclick="chooseTonic()">C#</button>
+				<button class="note" onclick="chooseTonic()">D</button>
+				<button class="note" onclick="chooseTonic()">D#</button>
+				<button class="note" onclick="chooseTonic()">E</button>
+				<button class="note" onclick="chooseTonic()">F</button>
+				<button class="note" onclick="chooseTonic()">F#</button>
+				<button class="note" onclick="chooseTonic()">G</button>
+				<button class="note" onclick="chooseTonic()">G#</button>
+				<button class="note" onclick="chooseTonic()">A</button>
+				<button class="note" onclick="chooseTonic()">A#</button>
+				<button class="note" onclick="chooseTonic()">B</button>
+				<input type="hidden" id="tonicInput" value="-1">
+			</div>
+			<div id="output" onclick="clearAll()"></div>
+		</div>
+	</body>
+</html>
