@@ -12,7 +12,11 @@
 .note-menu {
 	margin-top: 20px;
 	text-align: center;
-	color: white;
+}
+
+.chord-menu {
+	margin-top: 20px;
+	text-align: center;
 }
 
 #output {

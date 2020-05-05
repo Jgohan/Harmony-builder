@@ -4,6 +4,7 @@ var interval = ["T", "T", "H", "T", "T", "T", "H"];
 
 var tonicInput = document.getElementById("tonicInput");
 var harmonyInput = document.getElementById("harmonyInput");
+var chordInput = document.getElementById("chordInput");
 var output = document.getElementById("output");
 
 function clearNoteButtons() {
@@ -18,6 +19,7 @@ function clearAll() {
 	clearNoteButtons();
 	tonicInput.value = -1;
 	harmonyInput.value = -1;
+	chordInput.value = -1;
 }
 
 function chooseTonic() {
@@ -43,10 +45,18 @@ function chooseHarmony() {
 	}
 }
 
+function chooseChordType() {
+	chordInput.value = event.target.classList.item(1);
+
+	if(tonicInput.value >= 0) {
+		buildChord(+tonicInput.value, +chordInput.value)
+   }
+}
+
 function T(counter, flag) {
 	if(flag.value < 7) {
 		counter.value += 2;
-		if(counter.value >= 12) counter.value -= 12; 
+		counter.value %= 12; 
 		flag.value += 1;
 		output.innerText += " " + notes[counter.value];
 	}
@@ -55,10 +65,22 @@ function T(counter, flag) {
 function H(counter, flag) {
 	if(flag.value < 7) {
 		counter.value += 1;
-		if(counter.value >= 12) counter.value -= 12;
+		counter.value %= 12;
 		flag.value += 1; 
 		output.innerText += " " + notes[counter.value];
 	}
+}
+
+function m3(counter) {
+	counter.value += 3;
+	counter.value %= 12;
+	output.innerText += " " + notes[counter.value];
+}
+
+function b3(counter) {
+	counter.value += 4;
+	counter.value %= 12;
+	output.innerText += " " + notes[counter.value];
 }
 
 function buildHarmony(intervalCounter, tonic) {
@@ -79,3 +101,21 @@ function buildHarmony(intervalCounter, tonic) {
 		else H(counter, flag);
 	}
 }	
+
+function buildChord(tonic, chord) {
+	counter = {value: tonic};
+
+	output.innerText = notes[tonic] + " " + 
+		document.getElementById("chord"+chord).innerText.toLowerCase() + ": " +
+		notes[tonic];
+
+		if(chord == 0) {
+			b3(counter);
+			m3(counter);
+		}
+
+		if(chord == 1) {
+			m3(counter);
+			b3(counter);
+		}
+}
