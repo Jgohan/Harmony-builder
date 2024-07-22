@@ -8,35 +8,35 @@
 	</head>
 	<body>
 		<div>
-			<div class="button-menu">
-				<button class="major 0" id="0" onclick="chooseHarmony()">Ионийский</button>
-				<button class="minor 1" id="1" onclick="chooseHarmony()">Дорийский</button>
-				<button class="minor 2" id="2" onclick="chooseHarmony()">Фригийский</button>
-				<button class="major 3" id="3" onclick="chooseHarmony()">Лидийский</button>
-				<button class="major 4" id="4" onclick="chooseHarmony()">Миксолидийский</button>
-				<button class="minor 5" id="5" onclick="chooseHarmony()">Эолийский</button>
-				<button class="semi 6" id="6" onclick="chooseHarmony()">Локрийский</button>
+			<div class="harmony-menu">
+				<button class="major" id="0" onclick="chooseHarmony(this)">Ионийский</button>
+				<button class="minor" id="1" onclick="chooseHarmony(this)">Дорийский</button>
+				<button class="minor" id="2" onclick="chooseHarmony(this)">Фригийский</button>
+				<button class="major" id="3" onclick="chooseHarmony(this)">Лидийский</button>
+				<button class="major" id="4" onclick="chooseHarmony(this)">Миксолидийский</button>
+				<button class="minor" id="5" onclick="chooseHarmony(this)">Эолийский</button>
+				<button class="semi"  id="6" onclick="chooseHarmony(this)">Локрийский</button>
 				<input type="hidden" id="harmonyInput" value="-1">
 			</div>
 			<div class="chord-menu">
-				<button class="major 0" id="chord0" onclick="chooseChordType()">Мажор</button>
-				<button class="minor 1" id="chord1" onclick="chooseChordType()">Минор</button>
-				<input type="hidden" id="chordInput" value="-1">
+				<button class="major" id="major" onclick="chooseChordType(this)">Мажор</button>
+				<button class="minor" id="minor" onclick="chooseChordType(this)">Минор</button>
+				<input type="hidden" id="chordInput" value="">
 			</div>
 			<div class="note-menu">
-				<button class="note" onclick="chooseTonic()">C</button>
-				<button class="note" onclick="chooseTonic()">C#</button>
-				<button class="note" onclick="chooseTonic()">D</button>
-				<button class="note" onclick="chooseTonic()">D#</button>
-				<button class="note" onclick="chooseTonic()">E</button>
-				<button class="note" onclick="chooseTonic()">F</button>
-				<button class="note" onclick="chooseTonic()">F#</button>
-				<button class="note" onclick="chooseTonic()">G</button>
-				<button class="note" onclick="chooseTonic()">G#</button>
-				<button class="note" onclick="chooseTonic()">A</button>
-				<button class="note" onclick="chooseTonic()">A#</button>
-				<button class="note" onclick="chooseTonic()">B</button>
-				<input type="hidden" id="tonicInput" value="-1">
+				<button class="note" onclick="chooseKey(this)">C</button>
+				<button class="note" onclick="chooseKey(this)">C#</button>
+				<button class="note" onclick="chooseKey(this)">D</button>
+				<button class="note" onclick="chooseKey(this)">D#</button>
+				<button class="note" onclick="chooseKey(this)">E</button>
+				<button class="note" onclick="chooseKey(this)">F</button>
+				<button class="note" onclick="chooseKey(this)">F#</button>
+				<button class="note" onclick="chooseKey(this)">G</button>
+				<button class="note" onclick="chooseKey(this)">G#</button>
+				<button class="note" onclick="chooseKey(this)">A</button>
+				<button class="note" onclick="chooseKey(this)">A#</button>
+				<button class="note" onclick="chooseKey(this)">B</button>
+				<input type="hidden" id="keyInput" value="-1">
 			</div>
 			<div id="output" onclick="clearAll()"></div>
 		</div>
