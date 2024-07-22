@@ -1,121 +1,116 @@
-﻿var notes = ["C", "C#", "D", "D#", "E",
-			 "F", "F#", "G", "G#", "A", "A#", "B"];
-var interval = ["T", "T", "H", "T", "T", "T", "H"];			 
+﻿const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+const commonHarmonySchema = ["T", "T", "H", "T", "T", "T", "H"]
+const commonChordSchema = ["M3", "m3"]
 
-var tonicInput = document.getElementById("tonicInput");
-var harmonyInput = document.getElementById("harmonyInput");
-var chordInput = document.getElementById("chordInput");
-var output = document.getElementById("output");
+const harmonyInput = document.getElementById("harmonyInput")
+const chordInput = document.getElementById("chordInput")
+const keyInput = document.getElementById("keyInput")
+const noteButtons = document.getElementsByClassName("note")
 
-function clearNoteButtons() {
-	var noteButtons = document.getElementsByClassName("note");
-
-	for(var i = 0; i < noteButtons.length; i++) {
-		noteButtons[i].style.backgroundColor = "rgb(221, 221, 221)";
-	}
-}
+const output = document.getElementById("output")
 
 function clearAll() {
-	clearNoteButtons();
-	tonicInput.value = -1;
-	harmonyInput.value = -1;
-	chordInput.value = -1;
+	clearNoteButtons()
+	keyInput.value = -1
+	harmonyInput.value = -1
+	chordInput.value = -1
 }
 
-function chooseTonic() {
-	for(var i = 0; i < notes.length; i++) {
-		if(event.target.innerText == notes[i]) {
-			tonicInput.value = i;
-		}
-	}
-
-	if(harmonyInput.value >= 0) {
-		buildHarmony(+harmonyInput.value, +tonicInput.value);
-	}
-
-	clearNoteButtons();
-	event.target.style.backgroundColor = "#888";
-}
-
-function chooseHarmony() {
-	harmonyInput.value = event.target.classList.item(1);
-
-	if(tonicInput.value >= 0) {
-	 	buildHarmony(+harmonyInput.value, +tonicInput.value);
+function clearNoteButtons() {
+	for (let button of noteButtons) {
+		button.style.backgroundColor = "rgb(221, 221, 221)"
 	}
 }
 
-function chooseChordType() {
-	chordInput.value = event.target.classList.item(1);
+function chooseHarmony(button) {
+	harmonyInput.value = button.id
 
-	if(tonicInput.value >= 0) {
-		buildChord(+tonicInput.value, +chordInput.value)
-   }
-}
-
-function T(counter, flag) {
-	if(flag.value < 7) {
-		counter.value += 2;
-		counter.value %= 12; 
-		flag.value += 1;
-		output.innerText += " " + notes[counter.value];
+	if (keyInput.value >= 0) {
+	 	buildHarmony(keyInput.value, harmonyInput.value)
 	}
 }
 
-function H(counter, flag) {
-	if(flag.value < 7) {
-		counter.value += 1;
-		counter.value %= 12;
-		flag.value += 1; 
-		output.innerText += " " + notes[counter.value];
-	}
+function chooseChordType(button) {
+	chordInput.value = button.id
+
+	if (keyInput.value >= 0) {
+		buildChord(keyInput.value, chordInput.value)
+    }
 }
 
-function m3(counter) {
-	counter.value += 3;
-	counter.value %= 12;
-	output.innerText += " " + notes[counter.value];
-}
+function chooseKey(button) {
+	keyInput.value = notes.indexOf(button.textContent)
 
-function b3(counter) {
-	counter.value += 4;
-	counter.value %= 12;
-	output.innerText += " " + notes[counter.value];
-}
-
-function buildHarmony(intervalCounter, tonic) {
-	var counter = {value: tonic};
-	var flag = {value: 1};
-
-	output.innerText = notes[tonic] + " " + 
-		document.getElementById(intervalCounter).innerText.toLowerCase() + ": " +
-		notes[tonic];
-
-	for(var i = intervalCounter; i < 7; i++) {
-		if(interval[i] == "T") T(counter, flag);
-		else H(counter, flag);
+	if (harmonyInput.value >= 0) {
+		buildHarmony(keyInput.value, harmonyInput.value)
 	}
 
-	for(var i = 0; i < intervalCounter-1; i++) {
-		if(interval[i] == "T") T(counter, flag);
-		else H(counter, flag);
+	if (chordInput.value.length > 0) {
+		buildChord(keyInput.value, chordInput.value)
+	}
+
+	clearNoteButtons()
+	button.style.backgroundColor = "#888"
+}
+
+
+function buildHarmony(key, harmonyStart) {
+	let scale = moveByCycle(notes, key)
+	const harmonyButton = document.getElementById(harmonyStart)
+
+	output.innerText = `${notes[key]} ${harmonyButton.innerText.toLowerCase()}:`
+
+	moveByCycle(commonHarmonySchema, harmonyStart)
+		.map(interval => { 
+			if (interval === "H") return 1
+			if (interval === "T") return 2
+		})
+		.forEach((intervalSize, intervalNumber) => 
+			makeStep(scale, intervalNumber, intervalSize)
+		)
+		
+	for (let note of scale) {
+		output.innerText += " " + note
 	}
 }	
 
-function buildChord(tonic, chord) {
-	counter = {value: tonic};
+function buildChord(key, chordType) {
+	let scale = moveByCycle(notes, key)
+	const chordSchemaOffset = chordType == "major" ? 0 : 1
+	const chordButton = document.getElementById(chordType)
 
-	output.innerText = notes[tonic] + " " + 
-		document.getElementById("chord"+chord).innerText.toLowerCase() + ": " +
-		notes[tonic];
+	output.innerText = `${notes[key]} ${chordButton.innerText.toLowerCase()}:`
 
-		if(chord == 0) {
-			b3(counter);
-			m3(counter);
-		}
+	moveByCycle(commonChordSchema, chordSchemaOffset)
+		.map(interval => { 
+			if (interval === "m3") return 3
+			if (interval === "M3") return 4
+		})
+		.forEach((intervalSize, intervalNumber) => 
+			makeStep(scale, intervalNumber, intervalSize)
+		)
+		
+	const chordNotes = scale.slice(0, commonChordSchema.length + 1)
 
-		if(chord == 1) {
-			m3(counter);
-			b3(counter);
-		}
+	for (let note of chordNotes) {
+		output.innerText += " " + note
+	}
+}
+
+function moveByCycle(baseArray, movesNumber) {
+	let array = Array.from(baseArray)
+
+	for (let i = 0; i < movesNumber; i++) {
+		array.push(array.shift())
+	}
+
+	return array
+}
+
+function makeStep(scale, stepNumber, intervalSize) {
+	const currentNoteIndex = stepNumber + 1
+
+	if (intervalSize > 1 && currentNoteIndex < scale.length) {
+		scale.splice(currentNoteIndex, intervalSize - 1)
+	}
 }
